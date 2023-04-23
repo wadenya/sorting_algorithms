@@ -9,13 +9,16 @@
 
 void quick_sort(int *array, size_t size)
 {
-	int tmp, piv;
+	int tmp, piv, idx = 0, i_tmp;
 	size_t i = 0, j;
 
-	if (size > 1)
+	while (1)
 	{
-		piv = array[size - 1];
-		for (j = i; j < size; j++)
+		if (i == size - idx - 1)
+			break;
+		piv = array[size - idx - 1];
+		i_tmp = i;
+		for (j = i; j < size - idx; j++)
 		{
 			if (array[j] <= piv)
 			{
@@ -29,7 +32,15 @@ void quick_sort(int *array, size_t size)
 				i++;
 			}
 		}
-		quick_sort(array, i - 1);
-		quick_sort(array + i, size - i);
+		if (piv == array[j - 1])
+		{
+			idx++;
+			i = i_tmp;
+		}
+		else if (i - i_tmp > 2)
+		{
+			idx = size - i + 1;
+			i = i_tmp;
+		}
 	}
 }
