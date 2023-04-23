@@ -12,10 +12,11 @@ void quick_sort(int *array, size_t size)
 	int tmp, piv, idx = 0, i_tmp;
 	size_t i = 0, j;
 
-	while (1)
+	if (!array || size < 2)
+		return;
+
+	while (i < size - idx - 1)
 	{
-		if (i == size - idx - 1)
-			break;
 		piv = array[size - idx - 1];
 		i_tmp = i;
 		for (j = i; j < size - idx; j++)
