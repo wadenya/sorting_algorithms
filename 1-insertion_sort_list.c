@@ -13,6 +13,7 @@ void insertion_sort_list(listint_t **list)
 	if (!list)
 		return;
 
+	head = *list;
 	while (head && head->next)
 	{
 		swapped = 0;
