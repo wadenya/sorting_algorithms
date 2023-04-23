@@ -12,6 +12,9 @@ void quick_sort(int *array, size_t size)
 	int tmp, piv, idx = 0, i_tmp;
 	size_t i = 0, j;
 
+	if (!array)
+		return;
+
 	while (1)
 	{
 		if (i == size - idx - 1)

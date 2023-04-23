@@ -10,7 +10,9 @@ void insertion_sort_list(listint_t **list)
 	listint_t *head, *next, *prev, *tmp_head;
 	int swapped;
 
-	head = *list;
+	if (!list)
+		return;
+
 	while (head && head->next)
 	{
 		swapped = 0;
