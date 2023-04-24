@@ -1,55 +1,51 @@
 #include "sort.h"
 
-int get_maxv(int *array, int size);
-void radix_cnting_sort(int *array, size_t size, int sigd, int *buff);
-void radix_sort(int *array, size_t size);
-
 /**
- * get_maxv - Get the max value in an array of ints.
- * @array: An array of integers.
- * @size: The size of the array.
- * Return: The maximum integer in the array.
+ * get_max_val - Get the max value in an array of ints.
+ * @array: Array of integers.
+ * @size: Size of the array.
+ * Return: The max int
  */
-int get_maxv(int *array, int size)
+int get_max_val(int *array, int size)
 {
-	int max = 0;
+	int max, y;
 
-	for (int i = 0; i < size; i++)
+	for (max = array[0], y = 1; y < size; y++)
 	{
-		if (array[i] > max)
-			max = array[i];
+		if (array[y] > max)
+			max = array[y];
 	}
 
 	return (max);
 }
 
 /**
- * radix_cnting_sort - Sort the significant digits of an array of integers
- * in ascending order using the counting sort algorithm.
+ * radix_cnting - sorts sig digits of an array of integers in ascending
+ * order using the cnting sort algorithm
  * @array: An array of integers.
  * @size: The size of the array.
- * @sigd: significant digit to sort on.
+ * @sigd: The significant digit to sort on.
  * @buff: A buffer to store the sorted array.
  */
-void radix_cnting_sort(int *array, size_t size, int sigd, int *buff)
+void radix_cnting(int *array, size_t size, int sigd, int *buff)
 {
-	int count[10] = {0};
-	size_t i;
+	int cnt[10] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+	size_t y;
 
-	for (i = 0; i < size; i++)
-		count[(array[i] / sigd) % 10]++;
+	for (y = 0; y < size; y++)
+		cnt[(array[y] / sigd) % 10] += 1;
 
-	for (i = 1; i < 10; i++)
-		count[i] += count[i - 1];
+	for (y = 0; y < 10; y++)
+		cnt[y] += cnt[y - 1];
 
-	for (i = size - 1; (int)i >= 0; i--)
+	for (y = size - 1; (int)y >= 0; y--)
 	{
-		buff[count[(array[i] / sigd) % 10] - 1] = array[i];
-		count[(array[i] / sigd) % 10]--;
+		array[y] = buff[cnt[(array[y] / sigd) % 10] - 1];
+		cnt[(array[y] / sigd) % 10] -= 1;
 	}
 
-	for (i = 0; i < size; i++)
-		array[i] = buff[i];
+	for (y = 0; y < size; y++)
+		array[y] = buff[y];
 }
 
 /**
@@ -57,8 +53,6 @@ void radix_cnting_sort(int *array, size_t size, int sigd, int *buff)
  * order using the radix sort algorithm.
  * @array: An array of integers.
  * @size: The size of the array.
- * Description: Implements the LSD radix sort algorithm. Prints
- * the array after each significant digit increase.
  */
 void radix_sort(int *array, size_t size)
 {
@@ -71,10 +65,10 @@ void radix_sort(int *array, size_t size)
 	if (buff == NULL)
 		return;
 
-	max = get_maxv(array, size);
+	max = get_max_val(array, size);
 	for (sigd = 1; max / sigd > 0; sigd *= 10)
 	{
-		radix_cnting_sort(array, size, sigd, buff);
+		radix_cnting(array, size, sigd, buff);
 		print_array(array, size);
 	}
 
