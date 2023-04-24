@@ -40,7 +40,7 @@ void radix_cnting(int *array, size_t size, int sigd, int *buff)
 
 	for (y = size - 1; (int)y >= 0; y--)
 	{
-		array[y] = buff[cnt[(array[y] / sigd) % 10] - 1];
+		buff[cnt[(array[y] / sigd) % 10] - 1] = array[y];
 		cnt[(array[y] / sigd) % 10] -= 1;
 	}
 
