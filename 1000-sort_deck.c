@@ -1,76 +1,63 @@
 #include "deck.h"
 
 /**
- * card_cmp - Compare two cards
- * @c1: First card
- * @c2: Second card
- * Return: 1 if c1 > c2, 0 otherwise
+ * compare_cards - compare two cards based on their value and suit
+ * @a: card 1
+ * @b: card 2
+ *
+ * Return: 0 if equal, 1 if card 1 is greater, -1 if card 2 is greater
  */
-int card_cmp(const card_t *c1, const card_t *c2)
+int compare_cards(const void *a, const void *b)
 {
-	int ret = 0;
+	int cmp;
+	card_t *card1, *card2;
 
-	if (c1->kind > c2->kind)
-		ret = 1;
-	else if (c1->kind == c2->kind)
+	card1 = (card_t *)a;
+	card2 = (card_t *)b;
+
+	cmp = card1->kind - card2->kind;
+	if (cmp == 0)
 	{
-		if (c1->value[0] > c2->value[0])
-			ret = 1;
+		cmp = strcmp(card1->value, card2->value);
+		return (cmp);
 	}
-	return (ret);
+	return (cmp);
 }
 
 /**
- * swap_nodes - Swap two nodes
- *
- * @n1: First node
- * @n2: Second node
- */
-void swap_nodes(deck_node_t *n1, deck_node_t *n2)
-{
-	card_t *tmp_card;
-	deck_node_t *tmp_node;
-
-	tmp_card = n1->card;
-	n1->card = n2->card;
-	n2->card = tmp_card;
-
-	tmp_node = n1->prev;
-	n1->prev = n2->prev;
-	n2->prev = tmp_node;
-
-	tmp_node = n1->next;
-	n1->next = n2->next;
-	n2->next = tmp_node;
-}
-
-
-/**
- * sort_deck - Sort a deck of cards
- *
- * @deck: Deck to sort
+ * sort_deck - sorts a deck of cards
+ * @deck: double pointer to a doubly linked list
  */
 void sort_deck(deck_node_t **deck)
 {
-	int swapped;
 	deck_node_t *curr;
+	card_t *cards;
+	int i;
 
-	if (!deck || !*deck || !(*deck)->next)
+	if (!deck || !(*deck))
 		return;
 
-	do {
-		swapped = 0;
-		curr = *deck;
-		while (curr->next)
-		{
-			if (card_cmp(curr->card, curr->next->card) > 0)
-			{
-				swap_nodes(curr, curr->next);
-				if (curr->prev == NULL)
-					*deck = curr;
-				swapped = 1;
-			}
-			curr = curr->next;
-		}
-	} while (swapped);
+	curr = *deck;
+	cards = malloc(sizeof(card_t) * 52);
+	if (!cards)
+		return;
+
+	i = 0;
+	while (curr)
+	{
+		cards[i] = *(curr->card);
+		curr = curr->next;
+		i++;
+	}
+	qsort(cards, 52, sizeof(card_t), compare_cards);
+
+	curr = *deck;
+	i = 0;
+	while (curr)
+	{
+		*(curr->card) = cards[i];
+		curr = curr->next;
+		i++;
+	}
+	free(cards);
 }

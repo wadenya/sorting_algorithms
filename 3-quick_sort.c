@@ -1,47 +1,73 @@
 #include "sort.h"
 
 /**
- * quick_sort - implements the quick sort algorithm
- * @array: the array to sort
- * @size: size of the array
- * Return: void
+* prtn_schm - partition scheme for quicksort
+* @array: Array to sort
+* @low: lowest index of array
+* @high: highest index of array
+* Return: index of a pivot
 */
-
-void quick_sort(int *array, size_t size)
+int prtn_schm(int *array, int low, int high)
 {
-	int tmp, piv, idx = 0, i_tmp;
-	size_t i = 0, j;
+	int y, s, g, i;
+	static int size, c;
 
-	if (!array || size < 2)
-		return;
-
-	while (i < size - idx - 1)
+	if (c == 0)
+		size = high + 1, c++;
+	y = array[high];
+	s = low;
+	for (g = low; g < high; g++)
 	{
-		piv = array[size - idx - 1];
-		i_tmp = i;
-		for (j = i; j < size - idx; j++)
+		if (array[g] <= y)
 		{
-			if (array[j] <= piv)
+			if (s != g)
 			{
-				if (j != i)
-				{
-					tmp = array[i];
-					array[i] = array[j];
-					array[j] = tmp;
-					print_array(array, size);
-				}
-				i++;
+				i = array[s];
+				array[s] = array[g];
+				array[g] = i;
+				print_array(array, size);
 			}
-		}
-		if (piv == array[j - 1])
-		{
-			idx++;
-			i = i_tmp;
-		}
-		else if (i - i_tmp > 2)
-		{
-			idx = size - i + 1;
-			i = i_tmp;
+			s++;
 		}
 	}
+	if (s != high)
+	{
+		i = array[s];
+		array[s] = array[high];
+		array[high] = i;
+		print_array(array, size);
+	}
+
+	return (s);
+}
+
+/**
+* quick_rec_sort - Quicksort recurssive function
+* @array: array to sort
+* @low: lowest index
+* @high: highest index
+*/
+void quick_rec_sort(int *array, int low, int high)
+{
+	int y;
+
+	if (low < high)
+	{
+		y = prtn_schm(array, low, high);
+		quick_rec_sort(array, low, y - 1);
+		quick_rec_sort(array, low + 1, high);
+	}
+}
+
+
+/**
+* quick_sort - sorts array using quicksort algorithm
+* @array: Array to sort
+* @size: Size of array to sort
+*/
+void quick_sort(int *array, size_t size)
+{
+	if (array == NULL)
+		return;
+	quick_rec_sort(array, 0, size - 1);
 }
