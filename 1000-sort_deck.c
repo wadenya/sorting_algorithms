@@ -8,13 +8,20 @@
  */
 int card_cmp(const card_t *c1, const card_t *c2)
 {
-	int ret = 0;
+	int c1_val, c2_val, ret = 0;
 
 	if (c1->kind > c2->kind)
 		ret = 1;
 	else if (c1->kind == c2->kind)
 	{
-		if (c1->value[0] > c2->value[0])
+		c1_val = atoi(c1->value);
+		if (c1_val == 0)
+			c1_val = get_value(c1->value[0]);
+		c2_val = atoi(c2->value);
+		if (c2_val == 0)
+			c2_val = get_value(c2->value[0]);
+		printf("%d %d\n", c1_val, c2_val);
+		if (c1_val > c2_val)
 			ret = 1;
 	}
 	return (ret);
