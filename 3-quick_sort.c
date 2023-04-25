@@ -5,43 +5,47 @@
  * @array: the array to sort
  * @size: size of the array
  * Return: void
-*/
-
+ */
 void quick_sort(int *array, size_t size)
 {
-	int tmp, piv, idx = 0, i_tmp;
-	size_t i = 0, j;
+	int tmp, piv;
+	size_t end, start, i = 0, j, stack[1024], top = 0;
 
-	if (!array || size < 2)
-		return;
+	stack[top++] = 0;
+	stack[top++] = size;
 
-	while (i < size - idx - 1)
+	while (top > 0)
 	{
-		piv = array[size - idx - 1];
-		i_tmp = i;
-		for (j = i; j < size - idx; j++)
+		end = stack[--top];
+		start = stack[--top];
+		if (end - start <= 1)
+			continue;
+		piv = array[end - 1];
+		i = start - 1;
+		for (j = start; j < end - 1; j++)
 		{
 			if (array[j] <= piv)
 			{
-				if (j != i)
+				i++;
+				if (i != j)
 				{
 					tmp = array[i];
 					array[i] = array[j];
 					array[j] = tmp;
 					print_array(array, size);
 				}
-				i++;
 			}
 		}
-		if (piv == array[j - 1])
+		if (i != end - 2)
 		{
-			idx++;
-			i = i_tmp;
+			tmp = array[i + 1];
+			array[i + 1] = array[end - 1];
+			array[end - 1] = tmp;
+			print_array(array, size);
 		}
-		else if (i - i_tmp > 2)
-		{
-			idx = size - i + 1;
-			i = i_tmp;
-		}
+		stack[top++] = start;
+		stack[top++] = i + 1;
+		stack[top++] = i + 2;
+		stack[top++] = end;
 	}
 }
