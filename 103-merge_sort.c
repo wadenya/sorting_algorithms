@@ -46,7 +46,7 @@ void merg_split(int *array, int low, int mid, int high, int *temp)
 }
 
 /**
-* merge_rec - recsive fnct utilizing merge sort algorithm
+* merg_rec - recsive fnct utilizing merge sort algorithm
 * @array: Array
 * @low: Lowest index of split
 * @high: highest index of split
