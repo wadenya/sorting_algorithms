@@ -7,6 +7,7 @@
 * @high: highest index of array
 * Return: index of pivot
 */
+
 int prtn_schm(int *array, int low, int high)
 {
 	int y, s, g, m;
@@ -47,6 +48,7 @@ int prtn_schm(int *array, int low, int high)
 * @low: lowest index
 * @high: highest index
 */
+
 void quick_rec_sort(int *array, int low, int high)
 {
 	int y;
